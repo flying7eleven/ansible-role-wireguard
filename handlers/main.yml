@@ -1,2 +1,7 @@
 ---
-# handlers file for wireguard
+- name: Restart Wireguard interfaces
+  systemd_service:
+    name: "wg-quick@{{ item.interface }}"
+    state: restarted
+    enabled: yes
+  loop: "{{ wireguard }}"

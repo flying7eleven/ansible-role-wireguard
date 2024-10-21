@@ -1,2 +1,19 @@
 ---
-# tasks file for wireguard
+- name: Ensure that the required components for Wireguard are installed.
+  apt:
+    name: wireguard
+    state: present
+  when: wireguard is defined
+
+- name: Create the requested Wireguard interfaces.
+  template:
+    src: "templates/wireguard_interface.conf.j2"
+    dest: "/etc/wireguard/{{ item.interface }}.conf"
+    owner: root
+    group: root
+    mode: u=rw,g=,o=
+  with_items: "{{ wireguard }}"
+  no_log: true
+  when: wireguard is defined
+  notify:
+    - Restart Wireguard interfaces
