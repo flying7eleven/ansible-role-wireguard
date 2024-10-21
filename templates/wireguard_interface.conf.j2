@@ -1,13 +1,21 @@
+# This configuration is managed by an Ansible playbook
+
 [Interface]
 PrivateKey = {{ item.private_key }}
 Address = {{ item.ip.v4 }}
 ListenPort = 51820
-SaveConfig = true
+SaveConfig = false
 
 {% for peer in item.peers %}
 [Peer]
 # Peer configuration for {{ peer.name }}
 PublicKey = {{ peer.public_key }}
 AllowedIPs = {{ peer.allowed_ips | join(',') }}
+{% if peer.remote_endpoint is defined %}
 Endpoint = {{ peer.remote_endpoint }}
+{% endif %}
+{% if item.keep_alive is defined %}
+PersistentKeepalive = {{ peer.keep_alive }}
+{% endif %}
+
 {% endfor %}
