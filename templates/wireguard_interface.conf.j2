@@ -14,7 +14,7 @@ AllowedIPs = {{ peer.allowed_ips | join(',') }}
 {% if peer.remote_endpoint is defined %}
 Endpoint = {{ peer.remote_endpoint }}
 {% endif %}
-{% if item.keep_alive is defined %}
+{% if peer.keep_alive is defined %}
 PersistentKeepalive = {{ peer.keep_alive }}
 {% endif %}
 
